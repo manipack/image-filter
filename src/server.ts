@@ -46,10 +46,18 @@ import { filterImageFromURL, deleteLocalFiles, validateUrl } from './util/util';
 
     if (isValidUrl) {
       try {
-
         const image = await filterImageFromURL(image_url);
         imageFiles.push(image);
-        return res.status(200).sendFile(image);
+        return res.status(200).sendFile(image, async function (error) {
+          if (error) {
+              console.log( error)
+          } else {
+              console.log('Sent:', image);
+              imageFiles.push(image);
+              //await deleteLocalFiles(imageFiles);
+          }
+      });
+ 
 
       } catch (error) {
 
